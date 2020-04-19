@@ -3,6 +3,11 @@ package chapter.android.aweme.ss.com.homework;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+
+import static chapter.android.aweme.ss.com.homework.MainActivity.ex1;
 
 /**
  * 作业1：
@@ -13,11 +18,90 @@ import android.support.v7.app.AppCompatActivity;
  * Tips：思考用比Activity的生命周期要长的来存储？  （比如：application、static变量）
  */
 public class Exercises1 extends AppCompatActivity {
+    private static final String TAG = "warning";
 
+    private static final String ON_CREATE = "onCreate";
+    private static final String ON_START = "onStart";
+    private static final String ON_RESUME = "onResume";
+    private static final String ON_PAUSE = "onPause";
+    private static final String ON_STOP = "onStop";
+    private static final String ON_RESTART = "onRestart";
+    private static final String ON_DESTROY = "onDestroy";
+    private static final String ON_SAVE_INSTANCE_STATE = "onSaveInstanceState";
+    private static final String ON_RESTORE_INSTANCE_STATE = "onRestoreInstanceState";
+    private static final String LIFECYCLE_CALLBACKS_TEXT_KEY = "callbacks";
+
+    private static TextView mLifecycleDisplay;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.exercise1);
+        mLifecycleDisplay=findViewById(R.id.tv_loglifecycle2);
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey(LIFECYCLE_CALLBACKS_TEXT_KEY)) {
+                String savedContent = (String) savedInstanceState.get(LIFECYCLE_CALLBACKS_TEXT_KEY);
+                mLifecycleDisplay.setText(savedContent);
+                ex1.setText(savedContent);
+            }
+        }
+        logAndAppend(ON_CREATE);
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        logAndAppend(ON_RESTART);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        logAndAppend(ON_START);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        logAndAppend(ON_RESUME);
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        logAndAppend(ON_PAUSE);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        logAndAppend(ON_STOP);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        logAndAppend(ON_DESTROY);
+    }
+
+    private void logAndAppend(String lifecycleEvent) {
+        Log.d(TAG, "Lifecycle Event: " + lifecycleEvent);
+        MainActivity.ex1.append(lifecycleEvent+"\n");
+        mLifecycleDisplay.append(lifecycleEvent+"\n");
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        logAndAppend(ON_SAVE_INSTANCE_STATE);
+        String content = mLifecycleDisplay.getText().toString();//当前已有的log 提取出来
+        outState.putString(LIFECYCLE_CALLBACKS_TEXT_KEY, content); //把内容存储起来
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        logAndAppend(ON_RESTORE_INSTANCE_STATE);
+    }
 }

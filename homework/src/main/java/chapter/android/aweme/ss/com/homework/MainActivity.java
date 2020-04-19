@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    public static TextView ex1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,6 +17,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.btn_exercises1).setOnClickListener(this);
         findViewById(R.id.btn_exercises2).setOnClickListener(this);
         findViewById(R.id.btn_exercises3).setOnClickListener(this);
+        ex1=findViewById(R.id.tv_loglifecycle);
     }
 
     @Override
